@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace HabitLogger
 {
@@ -21,7 +22,7 @@ namespace HabitLogger
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                 .Title("Choose an option")
-                .AddChoices("Add a new habit", "See all habits", "Delete a habit"));
+                .AddChoices("Add a new habit", "See all habits", "Delete a habit", "Delete all habits"));
 
             switch (choice)
             {
@@ -33,6 +34,19 @@ namespace HabitLogger
                     break;
                 case "Delete a habit":
                     DeleteHabit(db);
+                    break;
+                case "Delete all habits":
+                    if (AnsiConsole.Confirm("[red]This option will delete everything,Continue with Deletion[/]?"))
+                    {
+                        DeleteAllHabits(db);
+                        AnsiConsole.MarkupLine("[green]All habits has been deleted successfully[/]");
+                        Thread.Sleep(1000);
+                    }
+                    else
+                    {
+                        AnsiConsole.MarkupLine("[red]Operation cancelled[/]");
+                        Thread.Sleep(1000);
+                    }
                     break;
             }
         }
@@ -92,6 +106,10 @@ namespace HabitLogger
             db.SaveChanges();
 
             AnsiConsole.MarkupLine("[green]Habit deleted![/]");
+        }
+        static void DeleteAllHabits(HabitDb db)
+        {
+            db.Habits.ExecuteDelete();
         }
     }
 }
