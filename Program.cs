@@ -22,7 +22,7 @@ namespace HabitLogger
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                 .Title("Choose an option")
-                .AddChoices("Add a new habit", "See all habits", "Delete a habit", "Delete all habits","Exit"));
+                .AddChoices("Add a new habit", "See all habits", "Edit a habit", "Delete a habit", "Delete all habits","Exit"));
 
             switch (choice)
             {
@@ -31,6 +31,9 @@ namespace HabitLogger
                     break;
                 case "See all habits":
                     ShowHabits(db);
+                    break;
+                case "Edit a habit":
+                    EditHabit(db);
                     break;
                 case "Delete a habit":
                     DeleteHabit(db);
@@ -93,6 +96,56 @@ namespace HabitLogger
             }
             
             AnsiConsole.Write(table);
+        }
+        //Under construction
+        static void EditHabit(HabitDb db)
+        {
+            ShowHabits(db);
+            
+            var id = AnsiConsole.Ask<int>("Enter habit ID to edit:");
+
+            var field = AnsiConsole.Prompt(
+            new MultiSelectionPrompt<string>()
+            .Title("Select [green]fields[/] to edit:")
+            .HighlightStyle(new Style(Color.Yellow, decoration: Decoration.Bold))
+            .Required()
+            .AddChoices("Name", "Quantity", "Date"));
+
+            var habit = db.Habits.Find(id);
+
+            if (habit == null)
+            {
+                AnsiConsole.MarkupLine("[red]Habit not found![/]");
+                return;
+            }
+            else
+            {
+                if (field.Contains("Name"))
+                {
+                    var newName = AnsiConsole.Ask<string>("Enter new habit name to edit:");
+                    habit.Name = newName;
+                }
+                if (field.Contains("Quantity"))
+                {
+                    var newQuantity = AnsiConsole.Ask<int>("Enter new habit quantity to edit:");
+                    habit.Quantity = newQuantity;
+                }
+                if (field.Contains("Date"))
+                {
+                    var newDate = AnsiConsole.Ask<DateTime>("Enter new habit date to edit:");
+                    habit.Date = newDate;
+                }
+            }
+            // Submit the changes to the database.
+            try
+            {
+                db.SaveChanges();
+                ShowHabits(db);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
         static void DeleteHabit(HabitDb db)
         {
