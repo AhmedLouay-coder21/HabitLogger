@@ -42,18 +42,30 @@ namespace HabitLogger
                 case "Add a new habit":
                     Console.Clear();
                     AddHabit(db);
+                    AnsiConsole.MarkupLine("\nPress any key to continue...");
+                    Console.ReadKey();
+                    Console.Clear();
                     break;
                 case "See all habits":
                     Console.Clear();
                     ShowHabits(db);
+                    AnsiConsole.MarkupLine("\nPress any key to continue...");
+                    Console.ReadKey();
+                    Console.Clear();
                     break;
                 case "Edit a habit":
                     Console.Clear();
                     EditHabit(db);
+                    AnsiConsole.MarkupLine("\nPress any key to continue...");
+                    Console.ReadKey();
+                    Console.Clear();
                     break;
                 case "Delete a habit":
                     Console.Clear();
                     DeleteHabit(db);
+                    AnsiConsole.MarkupLine("\nPress any key to continue...");
+                    Console.ReadKey();
+                    Console.Clear();
                     break;
                 case "Delete all habits":
                     Console.Clear();
@@ -61,12 +73,16 @@ namespace HabitLogger
                     {
                         DeleteAllHabits(db);
                         AnsiConsole.MarkupLine("[green]All habits have been deleted successfully[/]");
-                        Thread.Sleep(1000);
+                        AnsiConsole.MarkupLine("\nPress any key to continue...");
+                        Console.ReadKey();
+                        Console.Clear();
                     }
                     else
                     {
                         AnsiConsole.MarkupLine("[red]Operation cancelled[/]");
-                        Thread.Sleep(1000);
+                        AnsiConsole.MarkupLine("\nPress any key to continue...");
+                        Console.ReadKey();
+                        Console.Clear();
                     }
                     break;
                 case "Exit":
