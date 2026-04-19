@@ -205,6 +205,7 @@ namespace HabitLogger
         static void DeleteAllHabits(HabitDb db)
         {
             db.Habits.ExecuteDelete();
+            AnsiConsole.MarkupLine("[green]All habits deleted![/]");
         }
     }
 }
