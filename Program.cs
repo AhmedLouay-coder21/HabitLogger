@@ -166,21 +166,25 @@ namespace HabitLogger
         }
         static void DeleteHabit(HabitDb db)
         {
-            ShowHabits(db);
-            var id = AnsiConsole.Ask<int>("Enter habit ID to delete:");
-
-            var habit = db.Habits.Find(id);
-
-            if (habit == null)
+            if (!db.Habits.Any())
             {
-                AnsiConsole.MarkupLine("[red]Habit not found![/]");
+                AnsiConsole.MarkupLine("[red]No habits found![/]");
                 return;
             }
 
-            db.Habits.Remove(habit);
-            db.SaveChanges();
+            var habit = AnsiConsole.Prompt(
+                new SelectionPrompt<Habit>()
+                    .Title("Select a habit to delete:")
+                    .UseConverter(h => $"{h.Id} - {h.Name}")
+                    .AddChoices(db.Habits.ToList())
+            );
 
-            AnsiConsole.MarkupLine("[green]Habit deleted![/]");
+            if (AnsiConsole.Confirm($"Delete [red]{habit.Name}[/]?"))
+            {
+                db.Habits.Remove(habit);
+                db.SaveChanges();
+                AnsiConsole.MarkupLine("[green]Habit deleted![/]");
+            }
         }
         static void DeleteAllHabits(HabitDb db)
         {
