@@ -59,7 +59,7 @@ namespace HabitLogger
                     if (AnsiConsole.Confirm("[red]This option will delete everything,Continue with Deletion[/]?"))
                     {
                         DeleteAllHabits(db);
-                        AnsiConsole.MarkupLine("[green]All habits has been deleted successfully[/]");
+                        AnsiConsole.MarkupLine("[green]All habits have been deleted successfully[/]");
                         Thread.Sleep(1000);
                     }
                     else
