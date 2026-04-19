@@ -55,7 +55,8 @@ namespace HabitLogger
         {
             var allHabits = db.Habits.ToList();
             var table = new Table();
-  
+
+            table.AddColumn("ID");
             table.AddColumn("Name");
             table.AddColumn("Quantity");
             table.AddColumn("Date");
@@ -63,6 +64,7 @@ namespace HabitLogger
             foreach (var habit in allHabits)
             {
                 table.AddRow(
+                    habit.Id.ToString(),
                     habit.Name,
                     habit.Quantity.ToString(),
                     habit.Date.ToShortDateString()
