@@ -10,6 +10,7 @@ namespace HabitLogger
     {
         static void Main(string[] args)
         {
+            Console.Clear();
             displayAppTitle();
             using var db = new HabitDb();
             db.Database.EnsureCreated();
