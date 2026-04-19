@@ -11,8 +11,10 @@ namespace HabitLogger
         {
             using var db = new HabitDb();
             db.Database.EnsureCreated();
-            MainMenu(db);
-            db.SaveChanges();
+            while(true)
+            {
+                MainMenu(db);
+            }
         }
         static void MainMenu(HabitDb db)
         {
