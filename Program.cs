@@ -22,7 +22,7 @@ namespace HabitLogger
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                 .Title("Choose an option")
-                .AddChoices("Add a new habit", "See all habits", "Delete a habit", "Delete all habits"));
+                .AddChoices("Add a new habit", "See all habits", "Delete a habit", "Delete all habits","Exit"));
 
             switch (choice)
             {
@@ -47,6 +47,11 @@ namespace HabitLogger
                         AnsiConsole.MarkupLine("[red]Operation cancelled[/]");
                         Thread.Sleep(1000);
                     }
+                    break;
+                case "Exit":
+                    AnsiConsole.MarkupLine("[green]Program exited successfully![/]");
+                    Thread.Sleep(2000);
+                    Environment.Exit(0);
                     break;
             }
         }
