@@ -77,6 +77,7 @@ namespace HabitLogger
         }
         static void DeleteHabit(HabitDb db)
         {
+            ShowHabits(db);
             var id = AnsiConsole.Ask<int>("Enter habit ID to delete:");
 
             var habit = db.Habits.Find(id);
