@@ -19,7 +19,7 @@ namespace HabitLogger
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                 .Title("Choose an option")
-                .AddChoices("Add a new habit", "See all habits"));
+                .AddChoices("Add a new habit", "See all habits", "Delete a habit"));
 
             switch (choice)
             {
@@ -28,6 +28,9 @@ namespace HabitLogger
                     break;
                 case "See all habits":
                     ShowHabits(db);
+                    break;
+                case "Delete a habit":
+                    DeleteHabit(db);
                     break;
             }
         }
@@ -67,6 +70,23 @@ namespace HabitLogger
             }
             
             AnsiConsole.Write(table);
+        }
+        static void DeleteHabit(HabitDb db)
+        {
+            var id = AnsiConsole.Ask<int>("Enter habit ID to delete:");
+
+            var habit = db.Habits.Find(id);
+
+            if (habit == null)
+            {
+                AnsiConsole.MarkupLine("[red]Habit not found![/]");
+                return;
+            }
+
+            db.Habits.Remove(habit);
+            db.SaveChanges();
+
+            AnsiConsole.MarkupLine("[green]Habit deleted![/]");
         }
     }
 }
