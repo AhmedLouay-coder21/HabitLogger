@@ -10,12 +10,24 @@ namespace HabitLogger
     {
         static void Main(string[] args)
         {
+            displayAppTitle();
             using var db = new HabitDb();
             db.Database.EnsureCreated();
             while(true)
             {
                 MainMenu(db);
             }
+        }
+        static void displayAppTitle()
+        {
+            var appName = new FigletText("Habit Logger")
+        {
+            Color = Color.Blue,
+            Justification = Justify.Center
+        };
+        
+        AnsiConsole.Write(appName);
+        AnsiConsole.WriteLine();
         }
         static void MainMenu(HabitDb db)
         {
@@ -27,18 +39,23 @@ namespace HabitLogger
             switch (choice)
             {
                 case "Add a new habit":
+                    Console.Clear();
                     AddHabit(db);
                     break;
                 case "See all habits":
+                    Console.Clear();
                     ShowHabits(db);
                     break;
                 case "Edit a habit":
+                    Console.Clear();
                     EditHabit(db);
                     break;
                 case "Delete a habit":
+                    Console.Clear();
                     DeleteHabit(db);
                     break;
                 case "Delete all habits":
+                    Console.Clear();
                     if (AnsiConsole.Confirm("[red]This option will delete everything,Continue with Deletion[/]?"))
                     {
                         DeleteAllHabits(db);
@@ -97,19 +114,11 @@ namespace HabitLogger
             
             AnsiConsole.Write(table);
         }
-        //Under construction
         static void EditHabit(HabitDb db)
         {
             ShowHabits(db);
             
             var id = AnsiConsole.Ask<int>("Enter habit ID to edit:");
-
-            var field = AnsiConsole.Prompt(
-            new MultiSelectionPrompt<string>()
-            .Title("Select [green]fields[/] to edit:")
-            .HighlightStyle(new Style(Color.Yellow, decoration: Decoration.Bold))
-            .Required()
-            .AddChoices("Name", "Quantity", "Date"));
 
             var habit = db.Habits.Find(id);
 
@@ -120,6 +129,12 @@ namespace HabitLogger
             }
             else
             {
+                var field = AnsiConsole.Prompt(
+                    new MultiSelectionPrompt<string>()
+                    .Title("Select [green]fields[/] to edit:")
+                    .HighlightStyle(new Style(Color.Yellow, decoration: Decoration.Bold))
+                    .Required()
+                    .AddChoices("Name", "Quantity", "Date"));
                 if (field.Contains("Name"))
                 {
                     var newName = AnsiConsole.Ask<string>("Enter new habit name to edit:");
