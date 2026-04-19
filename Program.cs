@@ -161,6 +161,8 @@ namespace HabitLogger
             db.SaveChanges();
 
             AnsiConsole.MarkupLine("[green]Habit updated![/]");
+
+            ShowHabits(db);
         }
         static void DeleteHabit(HabitDb db)
         {
